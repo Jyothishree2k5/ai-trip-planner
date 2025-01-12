@@ -6,10 +6,14 @@ import { AI_PROMPT, SelectBudgetOptions, SelectTravelesList } from '@/constants/
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { chatSession } from '@/service/AIModal';
+import { setDoc , doc} from 'firebase/firestore';
+import { db } from '@/service/firebaseConfig';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 function CreateTrip ()  {
   const [place, setPlace] = useState(null);
 
   const [formData, setFormData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (name,value) => {
    
@@ -27,6 +31,8 @@ function CreateTrip ()  {
       toast("Please fill all the fields")
       return;
     }
+    setLoading(true);
+   
     const FINAL_PROMPT = AI_PROMPT
     .replace('{location}', formData?.location?.label)
     .replace('{totalDays}', formData?.days)
@@ -34,11 +40,32 @@ function CreateTrip ()  {
     .replace('{budget}', formData?.budget)
     .replace('{totalDays}', formData?.days)
 
-    console.log(FINAL_PROMPT)
+
 
     const result = await chatSession.sendMessage(FINAL_PROMPT);
-    console.log(result?.response?.text());
+    console.log('--',result?.response?.text());
+    setLoading(false);
+    SaveAiTrip(result?.response?.text());
     
+    
+  }
+  const SaveAiTrip = async(TripData)=>{
+
+    try{
+    const user= JSON.parse(localStorage.getItem('user') || '{"email": "guest@example.com"}');
+    const docId =  Date.now().toString();
+    await setDoc(doc(db, "AITrips", docId), {
+      userSelection : formData,
+      tripData : JSON.parse(TripData),
+      userEmail:user.email || 'guest@example.com',
+      id:docId
+
+    });
+    console.log('Document saved successfully');
+  }catch (error) {
+    console.error('Firebase save error:', error);
+    throw error;
+  } 
     
   }
   return (
@@ -55,6 +82,7 @@ function CreateTrip ()  {
             value: place,
             onChange: (value) => {setPlace(value);
               handleInputChange('location',value);
+              
             },
             
           }}
@@ -96,7 +124,11 @@ function CreateTrip ()  {
           </div>
       </div>
         <div className='my-10 justify-end flex'>
-        <Button onClick={OnGenerateTrip}>Generate Trip</Button>
+        <Button onClick={OnGenerateTrip}
+        disabled={loading}
+        >{loading ? 
+        <AiOutlineLoading3Quarters className='h-7 w-7 animate-spin'/> : 'Generate Trip'} 
+        </Button>
           </div>  
       
     
