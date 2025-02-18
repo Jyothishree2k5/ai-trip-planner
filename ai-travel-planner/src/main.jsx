@@ -7,6 +7,7 @@ import { Router } from 'lucide-react'
 import CreateTrip from './create-trip/index.jsx'
 import Header from  './components/ui/custom/Header.jsx'
 import { Toaster } from './components/ui/sonner.jsx'
+import Viewtrip from './view-trip/[tripId]/index.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,9 @@ const router = createBrowserRouter([
   },{
     path: "/create-trip",
     element: <CreateTrip />
+  },{
+    path:'/view-trip/:tripId',
+    element:<Viewtrip/>
   }
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -9,11 +9,14 @@ import { chatSession } from '@/service/AIModal';
 import { setDoc , doc} from 'firebase/firestore';
 import { db } from '@/service/firebaseConfig';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 function CreateTrip ()  {
   const [place, setPlace] = useState(null);
 
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (name,value) => {
    
@@ -61,6 +64,9 @@ function CreateTrip ()  {
       id:docId
 
     });
+    navigate(`/view-trip/${docId}`);
+    
+
     console.log('Document saved successfully');
   }catch (error) {
     console.error('Firebase save error:', error);
