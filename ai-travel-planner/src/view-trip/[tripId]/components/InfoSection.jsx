@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { RiSendPlaneFill } from "react-icons/ri";
-import { GetPlaceDetails } from '@/service/GlobalApi';
+import { GetPlaceDetails, PHOTO_REF_URL } from '@/service/GlobalApi';
 
 
-const PHOTO_REF_URL = 'https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=1000&maxWidthPx=1000&key=' + import.meta.env.VITE_GOOGLE_PLACE_API_KEY;
 
 function InfoSection({trip}) {
   const [photoUrl, setPhotoUrl] = React.useState('');
@@ -25,7 +24,7 @@ function InfoSection({trip}) {
   }
   return (
     <div>
-        <img src={photoUrl} className='w-full h-[340px] object-cover rounded'/>
+        <img src={photoUrl?photoUrl:'/placeholder.jpeg'} className='w-full h-[340px] object-cover rounded'/>
 
         <div className='flex justify-between items-center'>
             <div className='my-5 flex flex-col gap-2'>
