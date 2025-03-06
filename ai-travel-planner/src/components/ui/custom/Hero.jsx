@@ -12,6 +12,7 @@ function Hero() {
         <Link to="/create-trip">
         <Button className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors'>Get Started, It's Free</Button>    
         </Link>
+        <img src='/landingpage.png' alt='logo' className='h-96 w-auto' />
       </div>
     );
   }
