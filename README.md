@@ -6,7 +6,7 @@ An intelligent travel planning application built with React and powered by Googl
 
 - AI-powered travel recommendations
 - Interactive destination search with Google Places Autocomplete
-- User authentication with Firebase
+- Data storage with Firebase
 - Responsive design with Tailwind CSS
 - Modern UI components with Radix UI
 
